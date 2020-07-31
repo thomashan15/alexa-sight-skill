@@ -19,7 +19,11 @@
       "distributionCountries": []
     },
     "apis": {
-      "custom": {}
+      "custom": {
+        "endpoint": {
+          "uri": "arn:aws:lambda:us-east-1:861106128677:function:ask-skill-sample-controls--default-default-1596213008550"
+        }
+      }
     },
     "manifestVersion": "1.0"
   }

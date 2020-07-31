@@ -14,13 +14,22 @@ const Alexa = require('ask-sdk-core');
 const { InputUtil, ControlHandler, ControlManager, Control, LiteralContentAct } = require('ask-sdk-controls');
 
 class HelloControl extends Control {
-    canHandle(input) { return InputUtil.isLaunchRequest(input) || InputUtil.isIntent(input, 'HelloIntent'); }
-    handle(input, resultBuilder) { resultBuilder.addAct(new LiteralContentAct(this, {promptFragment: 'Hello, world.'})); resultBuilder.endSession(); }
-    canTakeInitiative() { return false; }
+    canHandle(input) {
+        return InputUtil.isLaunchRequest(input) || InputUtil.isIntent(input, 'HelloIntent');
+    }
+    handle(input, resultBuilder) {
+        resultBuilder.addAct(new LiteralContentAct(this, {promptFragment: 'Hello, world.'}));
+        resultBuilder.endSession();
+    }
+    canTakeInitiative() {
+        return false;
+    }
 }
 
 class HelloManager extends ControlManager {
-    createControlTree() { return new HelloControl('rootControl'); }
+    createControlTree() {
+        return new HelloControl('rootControl');
+    }
 }
 
 exports.handler = Alexa.SkillBuilders.custom()
