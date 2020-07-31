@@ -4,11 +4,15 @@
  * session persistence, api calls, and more.
  * */
 const Alexa = require('ask-sdk-core');
-// i18n library dependency, we use it below in a localisation interceptor
+// i18n library dependency, we use it below in a localization interceptor
 const i18n = require('i18next');
 // i18n strings for all supported locales
 const languageStrings = require('./languageStrings');
 const { getUserData } = require('./info_query');
+
+const mbpsToReadableString = (strWithTrailingMbps) => {
+    return `${strWithTrailingMbps.slice(0, -4)} mega bits per second`;
+}
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
@@ -16,10 +20,30 @@ const LaunchRequestHandler = {
     },
     async handle(handlerInput) {
         const data = await getUserData();
-        const speakOutput = handlerInput.t('WELCOME_MSG', { isp: data.data.isp });
+        const downloadSpeedReadableStr = mbpsToReadableString(data.data.download_speed_mbps);
+        const uploadSpeedReadableStr = mbpsToReadableString(data.data.upload_speed_mbps);
+        const bandwidthSpeedReadableStr = mbpsToReadableString(data.data.bandwidth);
+        const issueReasons = [
+            'high latency',
+            'high bandwidth consumption',
+            'low bandwidth available',
+            'high internet usage from another device'
+        ]
+        const randomIssueReasonSelected = Math.floor(Math.random() * 4);
+        const GOOD_INTERNET = 'Your internet is at or above average comparing to the average speed from your internet service provider.';
+        const BAD_INTERNET = 'Your internet is having some issues with ' + issueReasons[randomIssueReasonSelected];
+        const resultString = Math.random() * 2 > 1 ? GOOD_INTERNET : BAD_INTERNET;
+        const simpleInternetTestResponse = handlerInput.t('WELCOME_MSG', {
+            isp: data.data.isp,
+            internet_speed: downloadSpeedReadableStr,
+            bandwidth: bandwidthSpeedReadableStr,
+            upload_speed: uploadSpeedReadableStr,
+            result: resultString
+        });
+
         return handlerInput.responseBuilder
-            .speak(speakOutput)
-            .reprompt(speakOutput)
+            .speak(simpleInternetTestResponse)
+            .reprompt(simpleInternetTestResponse)
             .getResponse();
     }
 };
@@ -68,10 +92,28 @@ const CancelAndStopIntentHandler = {
             .getResponse();
     }
 };
+
+const LatencyIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.LatencyIntent';
+    },
+
+    handle(handlerInput) {
+        const speakOutput = handlerInput.t('LATENCY_MSG', {
+            latency:
+        });
+
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .getResponse();
+    }
+};
+
 /* *
  * FallbackIntent triggers when a customer says something that doesn’t map to any intents in your skill
  * It must also be defined in the language model (if the locale supports it)
- * This handler can be safely added but will be ingnored in locales that do not support it yet
+ * This handler can be safely added but will be ignored in locales that do not support it yet
  * */
 const FallbackIntentHandler = {
     canHandle(handlerInput) {
