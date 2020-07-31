@@ -11,8 +11,9 @@
     "dependencies": {
         "ask-sdk-core": "^2.8.0",
         "ask-sdk-model": "^1.28.0",
-        "lodash": "^4.17.15",
-        "ask-sdk-controls": "^0.2.0"
+        "aws-sdk": "^2.725.0",
+        "i18next": "^19.6.3",
+        "lodash": "^4.17.15"
     },
     "devDependencies": {
         "@types/chai": "^4.2.8",
