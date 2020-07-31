@@ -8,7 +8,7 @@
 module.exports = {
     en: {
         translation: {
-            WELCOME_MSG: 'Welcome, you can say Hello or Help. Which would you like to try?',
+            WELCOME_MSG: '<speak>Okay, I will check your internet speed for you. <break time="3000ms"/>It seems like you are using {{isp}} as your internet provider</speak>',
             HELLO_MSG: 'Hello World!',
             HELP_MSG: 'You can say hello to me! How can I help?',
             GOODBYE_MSG: 'Goodbye!',

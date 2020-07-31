@@ -8,14 +8,15 @@ const Alexa = require('ask-sdk-core');
 const i18n = require('i18next');
 // i18n strings for all supported locales
 const languageStrings = require('./languageStrings');
+const { getUserData } = require('./info_query');
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
-    handle(handlerInput) {
-        const speakOutput = handlerInput.t('WELCOME_MSG');
-
+    async handle(handlerInput) {
+        const data = await getUserData();
+        const speakOutput = handlerInput.t('WELCOME_MSG', { isp: data.data.isp });
         return handlerInput.responseBuilder
             .speak(speakOutput)
             .reprompt(speakOutput)

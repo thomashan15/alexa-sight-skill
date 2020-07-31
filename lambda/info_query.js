@@ -4,8 +4,14 @@ const s3 = new aws.S3({
     region: 'us-east-1'
 });
 
-exports.downloadFile = async () => {
+let userData = undefined;
+
+exports.getUserData = async () => {
     return new Promise((resolve, reject) => {
+        if (userData) {
+            return resolve(userData);
+        }
+
         s3.getObject({
             Bucket: 'user-internet-data',
             Key: 'mocked_user_data.json',
@@ -15,7 +21,8 @@ exports.downloadFile = async () => {
                 return;
             }
 
-            resolve(JSON.parse(data.Body.toString('utf-8')));
+            userData = JSON.parse(data.Body.toString('utf-8'));
+            resolve(userData);
         });
     });
 }
