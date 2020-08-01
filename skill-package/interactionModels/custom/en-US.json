@@ -21,9 +21,16 @@
             "Say hello",
             "Say hi"
           ]
+        },
+        {
+            "name": "LatencyIntent",
+            "samples": [
+                "tell me more about my latency",
+                "what about my latency"
+            ]
         }
       ],
-      "invocationName": "hello controls"
+      "invocationName": "network sight"
     },
     "prompts": []
   }

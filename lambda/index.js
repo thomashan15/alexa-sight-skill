@@ -14,6 +14,19 @@ const mbpsToReadableString = (strWithTrailingMbps) => {
     return `${strWithTrailingMbps.slice(0, -4)} mega bits per second`;
 }
 
+const msToReadableString = (strWithTrailingMs) => {
+    return `${strWithTrailingMs.slice(0, -2)} millisecond`;
+}
+
+const translateServerLocationToCityName = (latencyServerCode) => {
+    return {
+        'SEA': 'Seattle',
+        'ORD': 'Chicago',
+        'SFO': 'San Francisco',
+        'LAX': 'Los Angeles'
+    }[latencyServerCode];
+}
+
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
@@ -58,7 +71,7 @@ const HelloWorldIntentHandler = {
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
-            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+            .reprompt('add a reprompt if you want to keep the session open for the user to respond')
             .getResponse();
     }
 };
@@ -96,16 +109,19 @@ const CancelAndStopIntentHandler = {
 const LatencyIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.LatencyIntent';
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'LatencyIntent';
     },
 
-    handle(handlerInput) {
+    async handle(handlerInput) {
+        const data = await getUserData();
         const speakOutput = handlerInput.t('LATENCY_MSG', {
-            latency:
+            latency: msToReadableString(data.data.latency.internet_latency_avg_ms),
+            server_location: translateServerLocationToCityName(data.data.latency.latency_server)
         });
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
+            .reprompt(speakOutput)
             .getResponse();
     }
 };
@@ -204,6 +220,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         LaunchRequestHandler,
         HelloWorldIntentHandler,
         HelpIntentHandler,
+        LatencyIntentHandler,
         CancelAndStopIntentHandler,
         FallbackIntentHandler,
         SessionEndedRequestHandler,

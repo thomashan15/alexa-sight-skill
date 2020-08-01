@@ -16,7 +16,7 @@ module.exports = {
             LATENCY_MSG: '<speak>\
                 For sure! Your average latency is {{latency}} from server located in {{server_location}}. \
                 I can also monitor your internet latency twenty four seven and send you a weekly report. \
-                If that sounds internet to you, just say: "monitor my internet latency for me"</speak>',
+                If that sounds interesting to you, just say: "monitor my internet latency for me"</speak>',
             HELLO_MSG: 'Hello World!',
             HELP_MSG: 'You can say hello to me! How can I help?',
             GOODBYE_MSG: 'Goodbye!',

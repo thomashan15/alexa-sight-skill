@@ -9,12 +9,12 @@
             "hello",
             "help"
           ],
-          "name": "skill-sample-controls-hello-world",
+          "name": "Network Sight",
           "description": "Sample Full Description"
         }
       },
       "isAvailableWorldwide": true,
-      "testingInstructions": "Sample Testing Instructions.",
+      "testingInstructions": "",
       "category": "KNOWLEDGE_AND_TRIVIA",
       "distributionCountries": []
     },
