@@ -136,7 +136,6 @@ const SpeedTestIntentHandler = {
         const data = await getUserData();
         const downloadSpeedReadableStr = mbpsToReadableString(data.data.download_speed_mbps);
         const uploadSpeedReadableStr = mbpsToReadableString(data.data.upload_speed_mbps);
-        const bandwidthSpeedReadableStr = mbpsToReadableString(data.data.bandwidth);
         const speakOutput = handlerInput.t('SPEED_TEST_MSG', {
             isp: data.data.isp,
             download_speed: downloadSpeedReadableStr,
@@ -158,14 +157,8 @@ const YesIntentHandler = {
 
     async handle(handlerInput) {
         const data = await getUserData();
-        const downloadSpeedReadableStr = mbpsToReadableString(data.data.download_speed_mbps);
-        const uploadSpeedReadableStr = mbpsToReadableString(data.data.upload_speed_mbps);
-        const bandwidthSpeedReadableStr = mbpsToReadableString(data.data.bandwidth);
-        const speakOutput = handlerInput.t('WELCOME_MSG_YES', {
-            isp: data.data.isp,
-            internet_speed: downloadSpeedReadableStr,
-            bandwidth: bandwidthSpeedReadableStr,
-            upload_speed: uploadSpeedReadableStr,
+        const speakOutput = handlerInput.t('INTERNET_CONNECTION_ISSUES_YES_MSG2_SEND_DATA_YES', {
+            isp: data.data.isp
         });
 
         return handlerInput.responseBuilder
@@ -174,6 +167,46 @@ const YesIntentHandler = {
             .getResponse();
     }
 };
+
+const NoIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.NoIntent';
+    },
+
+    async handle(handlerInput) {
+        const speakOutput = handlerInput.t('INTERNET_CONNECTION_ISSUES_YES_MSG2_SEND_DATA_NO', {
+        });
+
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .reprompt(speakOutput)
+            .getResponse();
+    }
+};
+
+const MonitorLatencyHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'MonitorLatencyIntent';
+    },
+
+    async handle(handlerInput) {
+        const speakOutput = handlerInput.t('MONITOR_LATENCY_MSG', {
+            // isp: data.data.isp,
+            // internet_speed: downloadSpeedReadableStr,
+            // bandwidth: bandwidthSpeedReadableStr,
+            // upload_speed: uploadSpeedReadableStr,
+            device_count: 15
+        });
+
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .reprompt(speakOutput)
+            .getResponse();
+    }
+};
+
 
 /* *
  * FallbackIntent triggers when a customer says something that doesn’t map to any intents in your skill
@@ -275,6 +308,8 @@ exports.handler = Alexa.SkillBuilders.custom()
         LatencyIntentHandler,
         SpeedTestIntentHandler,
         YesIntentHandler,
+        NoIntentHandler,
+        MonitorLatencyHandler,
         CancelAndStopIntentHandler,
         FallbackIntentHandler,
         SessionEndedRequestHandler,

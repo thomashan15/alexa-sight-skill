@@ -35,6 +35,15 @@
         },
         {
           "name": "AMAZON.YesIntent"
+        },
+        {
+          "name": "AMAZON.NoIntent"
+        },
+        {
+          "name": "MonitorLatencyIntent",
+          "samples": [
+            "start monitoring my network latency for me"
+          ]
         }
       ],
       "invocationName": "network sight"
