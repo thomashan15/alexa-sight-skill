@@ -139,6 +139,30 @@ const SpeedTestIntentHandler = {
         const bandwidthSpeedReadableStr = mbpsToReadableString(data.data.bandwidth);
         const speakOutput = handlerInput.t('SPEED_TEST_MSG', {
             isp: data.data.isp,
+            download_speed: downloadSpeedReadableStr,
+            upload_speed: uploadSpeedReadableStr,
+        });
+
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .reprompt(speakOutput)
+            .getResponse();
+    }
+};
+
+const YesIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'AMAZON.YesIntent';
+    },
+
+    async handle(handlerInput) {
+        const data = await getUserData();
+        const downloadSpeedReadableStr = mbpsToReadableString(data.data.download_speed_mbps);
+        const uploadSpeedReadableStr = mbpsToReadableString(data.data.upload_speed_mbps);
+        const bandwidthSpeedReadableStr = mbpsToReadableString(data.data.bandwidth);
+        const speakOutput = handlerInput.t('WELCOME_MSG_YES', {
+            isp: data.data.isp,
             internet_speed: downloadSpeedReadableStr,
             bandwidth: bandwidthSpeedReadableStr,
             upload_speed: uploadSpeedReadableStr,
@@ -250,6 +274,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         HelpIntentHandler,
         LatencyIntentHandler,
         SpeedTestIntentHandler,
+        YesIntentHandler,
         CancelAndStopIntentHandler,
         FallbackIntentHandler,
         SessionEndedRequestHandler,

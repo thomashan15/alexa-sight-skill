@@ -12,6 +12,16 @@ module.exports = {
                 <amazon:emotion name="excited" intensity="medium">Welcome to Alexa Sight.</amazon:emotion> \
                 I can help you scan your network and list all the devices \
                 on your network. Would you like to do it now?</speak>',
+            WELCOME_MSG_YES: '<speak>\
+                <amazon:emotion name="excited" intensity="medium">Great!</amazon:emotion>\
+                Scanning your network now. <break time="3000ms" />\
+                I have found {{device_count}} on your network. All devices are healthy and online. \
+                I can continue monitoring these devices, would you like me to do that?</speak>',
+            WELCOME_MSG_NO: '<speak>Okay, you can also ask me about your network latency or internet speed by asking \
+                <break time="500ms" /> "run a speed test for me" or <break time="500ms" /> "tell me about my network latency".</speak>',
+            WELCOME_MSG_MONITORING_YES: '<speak>Okay, I will definitely keep an eye on your devices. \
+                And you can come back and ask me about the connection status on a specific device.</speak>',
+            WELCOME_MSG_MONITORING_NO: '<speak>That\'s totally fine. You can ask me to check on your devices on your network anytime.</speak>',
             LATENCY_MSG: '<speak>\
                 For sure! Your average latency is {{latency}} from server located in {{server_location}}. \
                 I can also monitor your internet latency twenty four seven and send you a weekly report. \
@@ -20,6 +30,13 @@ module.exports = {
                 I will be using the server located in San Francisco. Please hold on... \
                 <break time=”3000ms“/> Your download speed is {{download_speed}} and upload speed is {{upload_speed}} \
                 with your internet service provider {{isp}}. Are you having internet issues?</speak>',
+            INTERNET_CONNECTION_ISSUES_YES_MSG1: 'Okay, I have detected a device is consuming 50 percent of your internet speed. \
+                It is a deice manufactured by Apple, and the owner is Yuki. Good luck investigating.',
+            INTERNET_CONNECTION_ISSUES_YES_MSG2: 'Okay, I don\t find anything particularly interesting, \
+                but I have recorded this event, and I can send this data to your internet service provider {{isp}}. Would you like me to do that?',
+            INTERNET_CONNECTION_ISSUES_YES_MSG2_SEND_DATA_YES: '<speak><break time="1000ms"/>Okay, data sent. Let me know what else I can help you with.</speak>',
+            INTERNET_CONNECTION_ISSUES_YES_MSG2_SEND_DATA_NO: 'Okay, I will not send the data. Let me know what else I can help you with.</speak>',
+            INTERNET_CONNECTION_ISSUES_NO_MSG: 'Okay. Come back and check your internet speed anytime',
             HELLO_MSG: 'Hello World!',
             HELP_MSG: 'You can say hello to me! How can I help?',
             GOODBYE_MSG: 'Goodbye!',

@@ -19,7 +19,8 @@
           "name": "LatencyIntent",
           "samples": [
             "tell me more about my latency",
-            "what about my latency"
+            "what about my latency",
+            "tell me about my network latency"
           ]
         },
         {
@@ -31,6 +32,9 @@
             "do a speed test",
             "do a speed test for me"
           ]
+        },
+        {
+          "name": "AMAZON.YesIntent"
         }
       ],
       "invocationName": "network sight"
