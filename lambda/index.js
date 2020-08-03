@@ -32,31 +32,31 @@ const LaunchRequestHandler = {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     async handle(handlerInput) {
-        const data = await getUserData();
-        const downloadSpeedReadableStr = mbpsToReadableString(data.data.download_speed_mbps);
-        const uploadSpeedReadableStr = mbpsToReadableString(data.data.upload_speed_mbps);
-        const bandwidthSpeedReadableStr = mbpsToReadableString(data.data.bandwidth);
-        const issueReasons = [
-            'high latency',
-            'high bandwidth consumption',
-            'low bandwidth available',
-            'high internet usage from another device'
-        ]
-        const randomIssueReasonSelected = Math.floor(Math.random() * 4);
-        const GOOD_INTERNET = 'Your internet is at or above average comparing to the average speed from your internet service provider.';
-        const BAD_INTERNET = 'Your internet is having some issues with ' + issueReasons[randomIssueReasonSelected];
-        const resultString = Math.random() * 2 > 1 ? GOOD_INTERNET : BAD_INTERNET;
-        const simpleInternetTestResponse = handlerInput.t('WELCOME_MSG', {
-            isp: data.data.isp,
-            internet_speed: downloadSpeedReadableStr,
-            bandwidth: bandwidthSpeedReadableStr,
-            upload_speed: uploadSpeedReadableStr,
-            result: resultString
-        });
+        // const data = await getUserData();
+        // const downloadSpeedReadableStr = mbpsToReadableString(data.data.download_speed_mbps);
+        // const uploadSpeedReadableStr = mbpsToReadableString(data.data.upload_speed_mbps);
+        // const bandwidthSpeedReadableStr = mbpsToReadableString(data.data.bandwidth);
+        // const issueReasons = [
+        //     'high latency',
+        //     'high bandwidth consumption',
+        //     'low bandwidth available',
+        //     'high internet usage from another device'
+        // ]
+        // const randomIssueReasonSelected = Math.floor(Math.random() * 4);
+        // const GOOD_INTERNET = 'Your internet is at or above average comparing to the average speed from your internet service provider.';
+        // const BAD_INTERNET = 'Your internet is having some issues with ' + issueReasons[randomIssueReasonSelected];
+        // const resultString = Math.random() * 2 > 1 ? GOOD_INTERNET : BAD_INTERNET;
+        // const simpleInternetTestResponse = handlerInput.t('WELCOME_MSG', {
+        //     isp: data.data.isp,
+        //     internet_speed: downloadSpeedReadableStr,
+        //     bandwidth: bandwidthSpeedReadableStr,
+        //     upload_speed: uploadSpeedReadableStr,
+        //     result: resultString
+        // });
 
         return handlerInput.responseBuilder
-            .speak(simpleInternetTestResponse)
-            .reprompt(simpleInternetTestResponse)
+            .speak(handlerInput.t('WELCOME_MSG'))
+            .reprompt(handlerInput.t('WELCOME_MSG'))
             .getResponse();
     }
 };
@@ -117,6 +117,31 @@ const LatencyIntentHandler = {
         const speakOutput = handlerInput.t('LATENCY_MSG', {
             latency: msToReadableString(data.data.latency.internet_latency_avg_ms),
             server_location: translateServerLocationToCityName(data.data.latency.latency_server)
+        });
+
+        return handlerInput.responseBuilder
+            .speak(speakOutput)
+            .reprompt(speakOutput)
+            .getResponse();
+    }
+};
+
+const SpeedTestIntentHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'SpeedTestIntent';
+    },
+
+    async handle(handlerInput) {
+        const data = await getUserData();
+        const downloadSpeedReadableStr = mbpsToReadableString(data.data.download_speed_mbps);
+        const uploadSpeedReadableStr = mbpsToReadableString(data.data.upload_speed_mbps);
+        const bandwidthSpeedReadableStr = mbpsToReadableString(data.data.bandwidth);
+        const speakOutput = handlerInput.t('SPEED_TEST_MSG', {
+            isp: data.data.isp,
+            internet_speed: downloadSpeedReadableStr,
+            bandwidth: bandwidthSpeedReadableStr,
+            upload_speed: uploadSpeedReadableStr,
         });
 
         return handlerInput.responseBuilder
@@ -224,6 +249,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         HelloWorldIntentHandler,
         HelpIntentHandler,
         LatencyIntentHandler,
+        SpeedTestIntentHandler,
         CancelAndStopIntentHandler,
         FallbackIntentHandler,
         SessionEndedRequestHandler,

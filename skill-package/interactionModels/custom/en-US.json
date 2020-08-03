@@ -16,18 +16,21 @@
           "name": "AMAZON.CancelIntent"
         },
         {
-          "name": "HelloIntent",
+          "name": "LatencyIntent",
           "samples": [
-            "Say hello",
-            "Say hi"
+            "tell me more about my latency",
+            "what about my latency"
           ]
         },
         {
-            "name": "LatencyIntent",
-            "samples": [
-                "tell me more about my latency",
-                "what about my latency"
-            ]
+          "name": "SpeedTestIntent",
+          "samples": [
+            "run speed test",
+            "run a speed test",
+            "run a speed test for me",
+            "do a speed test",
+            "do a speed test for me"
+          ]
         }
       ],
       "invocationName": "network sight"
